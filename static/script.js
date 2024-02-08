@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(userSelection)
                 // Check user selection and continue the process accordingly
                 if (userSelection === "yes") {
-
+                    document.querySelector("#no").style.display = "hidden";
                     displayFirework()
                 }
             }
