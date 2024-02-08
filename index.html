@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Surprise</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Black curtain element -->
+    <div id="black-background"></div>
+    <div id="content" class="hidden">
+        <!-- Typing container -->
+        <div class="typing-container">
+            <span id="feature-text"></span>
+            <span class="input-cursor"></span>
+            <div id="buttons" class='hidden'>
+                <button id="yes">Yes</button>
+                <button id="no">No</button>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery and custom JavaScript file -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
