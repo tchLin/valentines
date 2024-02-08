@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Valentine's Surprise</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='static/styles.css') }}">
 </head>
+
 <body>
     <!-- Black curtain element -->
     <div id="black-background"></div>
@@ -22,6 +24,7 @@
     </div>
     <!-- jQuery and custom JavaScript file -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='static/script.js') }}"></script>
 </body>
+
 </html>
