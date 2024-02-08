@@ -1,5 +1,5 @@
 // Function to type a sentence with a delay between each character
-async function typeSentence(sentence, eleRef, speed = 5) {
+async function typeSentence(sentence, eleRef, speed = 50) {
     const letters = sentence.split("");
     for (let i = 0; i < letters.length; i++) {
         await waitForMs(speed);
@@ -8,7 +8,7 @@ async function typeSentence(sentence, eleRef, speed = 5) {
 }
 
 // Function to delete a sentence with a delay between each character
-async function deleteSentence(eleRef, speed = 5) {
+async function deleteSentence(eleRef, speed = 50) {
     const sentence = $(eleRef).html();
     const letters = sentence.split("");
     while (letters.length > 0) {
