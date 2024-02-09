@@ -302,6 +302,11 @@ document.addEventListener("DOMContentLoaded", function () {
             else if (result === "heal") {
                 await waitForMs(1000)
                 const imagePaths = ['static/images/cat5.gif', 'static/images/cat8.gif', 'static/images/cat9.gif', 'static/images/cat15.gif', 'static/images/cat10.gif', 'static/images/cat13.gif', 'static/images/cat14.gif'];
+                const audio = document.createElement("audio");
+                audio.src = "static/audio/sad meme songs.mp3";
+                audio.loop = true;
+                audio.autoplay = true;
+                audio.volume = 0.5;
                 // Loop through the list of image paths
                 for (let i = 0; i < imagePaths.length; i++) {
                     await deleteSentence("#feature-text");
