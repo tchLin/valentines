@@ -1,5 +1,5 @@
 // Function to type a sentence with a delay between each character
-async function typeSentence(sentence, eleRef, speed = 50) {
+async function typeSentence(sentence, eleRef, speed = 70) {
     const letters = sentence.split("");
     for (let i = 0; i < letters.length; i++) {
         await waitForMs(speed);
@@ -8,7 +8,7 @@ async function typeSentence(sentence, eleRef, speed = 50) {
 }
 
 // Function to delete a sentence with a delay between each character
-async function deleteSentence(eleRef, speed = 50) {
+async function deleteSentence(eleRef, speed = 70) {
     const sentence = $(eleRef).html();
     const letters = sentence.split("");
     while (letters.length > 0) {
@@ -307,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 audio.loop = true;
                 audio.autoplay = true;
                 audio.volume = 0.5;
+                document.body.appendChild(audio);
                 // Loop through the list of image paths
                 for (let i = 0; i < imagePaths.length; i++) {
                     await deleteSentence("#feature-text");
