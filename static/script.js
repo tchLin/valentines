@@ -44,19 +44,54 @@ function waitForMs(ms) {
 // Function to update the decision based on user selections
 async function updateDecision(node) {
     const question = node.question;
-    await deleteSentence("#feature-text"); // Delete previous question
-    await typeSentence(question, "#feature-text"); // Type new question
+    await deleteSentence("#feature-text");
+    await typeSentence(question, "#feature-text");
 }
 
-async function startDecisionProcess(decisionTree, currentNodeKey = "root") {
+async function startDecisionProcess(root, decisionTree, currentNodeKey = "root") {
     const currentNode = decisionTree[currentNodeKey];
 
     if (currentNode.hasOwnProperty('result')) {
         await updateDecision(currentNode);
+        if (currentNode['result'] === "wait") {
+
+            var image = document.getElementById("fadeInImage");
+            image.style.opacity = 0;
+            await waitForMs(1000)
+            var image = document.getElementById("fadeInImage");
+            image.src = "static/images/cat12.gif";
+            image.style.opacity = 1;
+
+            const audio = document.createElement("audio");
+            audio.src = "static/audio/cat stare.mp3";
+            audio.loop = true;
+            audio.autoplay = true;
+            audio.volume = 0.5;
+
+            await waitForMs(30000)
+            audio.pause();
+            audio.remove();
+
+            await deleteSentence("#feature-text")
+            var image = document.getElementById("fadeInImage");
+            image.style.opacity = 0;
+
+            await waitForMs(1000)
+
+            var image = document.getElementById("fadeInImage");
+            image.src = "static/images/cat17.jpg";
+            image.style.opacity = 1;
+            startDecisionProcess(root, root, "root")
+        }
         return currentNode['result'];
     }
 
     await updateDecision(currentNode);
+
+    if (currentNodeKey === "root") {
+        var image = document.getElementById("fadeInImage");
+        image.style.opacity = 1;
+    }
 
     // Fade in the buttons after typing the question
     var buttonsElement = document.getElementById("buttons");
@@ -67,7 +102,7 @@ async function startDecisionProcess(decisionTree, currentNodeKey = "root") {
     // Fade out the buttons after user selection
     buttonsElement.style.opacity = "0";
 
-    return startDecisionProcess(currentNode, userSelection); // Return the result of the recursive call
+    return startDecisionProcess(root, currentNode, userSelection); // Return the result of the recursive call
 }
 
 // Function to get user selection (returns "yes" or "no")
@@ -85,10 +120,10 @@ async function getUserSelection() {
 function displayFirework() {
     // Create a video element for the background
     const video = document.createElement("video");
-    video.src = "static/images/firework.mp4"; // Updated path to firework video
+    video.src = "static/images/firework.mp4";
     video.autoplay = true;
     video.loop = true;
-    video.muted = true; // Mute the video to prevent audio playback
+    video.muted = true;
     video.style.position = "fixed";
     video.style.width = "100%";
     video.style.height = "100%";
@@ -96,18 +131,18 @@ function displayFirework() {
     document.body.appendChild(video);
 
     const audio = document.createElement("audio");
-    audio.src = "static/audio/chibichibichabachaba.mp3"; // Path to your audio file
-    audio.loop = true; // Loop the audio playback
-    audio.autoplay = true; // Autoplay the audio when the page loads
-    audio.volume = 0.5; // Adjust the volume (0.0 to 1.0)
+    audio.src = "static/audio/chibichibichabachaba.mp3";
+    audio.loop = true;
+    audio.autoplay = true;
+    audio.volume = 0.5;
 
     document.body.appendChild(audio);
 
     const positions = [
-        { src: "static/images/cat2.gif", left: "50%", top: "88%", transform: "translate(-50%, -50%) scale(0.5)" }, // Middle, smaller size
-        { src: "static/images/cat1.gif", left: "1400.16px", top: "100.218px" }, // Top 393.218 left 711.16
-        { src: "static/images/cat7.gif", left: "710.233px", top: "153.279px" }, // Left 710.233, top 153.279
-        { src: "static/images/cat6.gif", left: "49.0009px", top: "272.764px" } // Left 47.0009, top 272.764
+        { src: "static/images/cat2.gif", left: "50%", top: "88%", transform: "translate(-50%, -50%) scale(0.5)" },
+        { src: "static/images/cat1.gif", left: "1400.16px", top: "100.218px" },
+        { src: "static/images/cat7.gif", left: "710.233px", top: "153.279px" },
+        { src: "static/images/cat6.gif", left: "49.0009px", top: "272.764px" }
     ];
 
     // Add cat gifs to the page at specified positions
@@ -143,12 +178,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const carouselText = [
                 { text: "Happy Early Valentines Day!", color: "#AF3E4D" },
                 { text: "Although we're in different cities...", color: "#AF3E4D" },
-                { text: "I still made this web to ask...", color: "#AF3E4D" },
+                { text: "I still made this web page to ask...", color: "#AF3E4D" },
             ];
 
             // Run the carousel animation
             await carousel(carouselText, "#feature-text");
-
             // Define the decision tree
             const decisionTree = {
                 "root": {
@@ -164,8 +198,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     "result": "firework"
                                 },
                                 "no": {
-                                    "question": "TOO LATE!",
-                                    "result": "yoink"
+                                    "question": "TOO LATE! You have to be my valentine now.",
+                                    "result": "button float"
                                 }
                             },
                             "no": {
@@ -213,14 +247,14 @@ document.addEventListener("DOMContentLoaded", function () {
                             },
                             "no": {
                                 "question": "TOO LATE! You have to be my valentine now.",
-                                "result": "yoink"
+                                "result": "button float"
                             }
                         }
                     }
                 }
             };
 
-            const result = await startDecisionProcess(decisionTree);
+            const result = await startDecisionProcess(decisionTree, decisionTree);
             console.log(result)
 
             // Check the result and trigger actions accordingly
@@ -261,19 +295,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(userSelection)
                 // Check user selection and continue the process accordingly
                 if (userSelection === "yes") {
-                    document.querySelector("#no").style.display = "hidden";
+                    document.querySelector("#no").style.display = "none";
                     displayFirework()
                 }
             }
             else if (result === "heal") {
+                await waitForMs(1000)
+                const imagePaths = ['static/images/cat5.gif', 'static/images/cat8.gif', 'static/images/cat9.gif', 'static/images/cat15.gif', 'static/images/cat10.gif', 'static/images/cat13.gif', 'static/images/cat14.gif'];
+                // Loop through the list of image paths
+                for (let i = 0; i < imagePaths.length; i++) {
+                    await deleteSentence("#feature-text");
+                    const image = document.getElementById("fadeInImage");
 
-            }
+                    // Set the src attribute of the image
+                    image.src = imagePaths[i];
 
-            else if (result === "wait") {
+                    // Fade in the image and caption
+                    image.style.opacity = 1;
 
-            }
+                    await typeSentence("This is bebe now...", '#feature-text')
 
-            else if (result === "yoink") {
+                    // Wait for 2000 milliseconds (2 seconds) before fading out
+                    await new Promise(resolve => setTimeout(resolve, 5000));
+
+                    // Fade out the image and caption
+                    image.style.opacity = 0;
+                }
+                await deleteSentence("#feature-text");
+                await typeSentence("Refresh to restart :(", "#feature-text")
 
             }
         });

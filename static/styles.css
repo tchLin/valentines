@@ -68,6 +68,18 @@ body {
     }
 }
 
+#fadeInImage {
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 1s ease;
+    width: 200px;
+    height: auto;
+}
+
+
 /* Typing Container */
 .typing-container {
     display: flex;
